@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hman.water.dao.RiverAreaPointInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.hman.water.model.RiverAreaPointInfo" >
+    <id column="ap_id" property="apId" jdbcType="INTEGER" />
+    <result column="areaid" property="areaid" jdbcType="VARCHAR" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="ip" property="ip" jdbcType="NVARCHAR" />
+    <result column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="c_name" property="cName" jdbcType="NVARCHAR" />
+    <result column="functionary" property="functionary" jdbcType="NCHAR" />
+    <result column="telphone" property="telphone" jdbcType="NCHAR" />
+    <result column="email" property="email" jdbcType="NCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ap_id, areaid, type_id, ip, c_id, c_name, functionary, telphone, email
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from river_area_point_info
+    where ap_id = #{apId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from river_area_point_info
+    where ap_id = #{apId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hman.water.model.RiverAreaPointInfo" >
+    insert into river_area_point_info (ap_id, areaid, type_id, 
+      ip, c_id, c_name, functionary, 
+      telphone, email)
+    values (#{apId,jdbcType=INTEGER}, #{areaid,jdbcType=VARCHAR}, #{typeId,jdbcType=INTEGER}, 
+      #{ip,jdbcType=NVARCHAR}, #{cId,jdbcType=VARCHAR}, #{cName,jdbcType=NVARCHAR}, #{functionary,jdbcType=NCHAR}, 
+      #{telphone,jdbcType=NCHAR}, #{email,jdbcType=NCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hman.water.model.RiverAreaPointInfo" >
+    insert into river_area_point_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="apId != null" >
+        ap_id,
+      </if>
+      <if test="areaid != null" >
+        areaid,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="cName != null" >
+        c_name,
+      </if>
+      <if test="functionary != null" >
+        functionary,
+      </if>
+      <if test="telphone != null" >
+        telphone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="apId != null" >
+        #{apId,jdbcType=INTEGER},
+      </if>
+      <if test="areaid != null" >
+        #{areaid,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=NVARCHAR},
+      </if>
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cName != null" >
+        #{cName,jdbcType=NVARCHAR},
+      </if>
+      <if test="functionary != null" >
+        #{functionary,jdbcType=NCHAR},
+      </if>
+      <if test="telphone != null" >
+        #{telphone,jdbcType=NCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=NCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hman.water.model.RiverAreaPointInfo" >
+    update river_area_point_info
+    <set >
+      <if test="areaid != null" >
+        areaid = #{areaid,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=NVARCHAR},
+      </if>
+      <if test="cId != null" >
+        c_id = #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="cName != null" >
+        c_name = #{cName,jdbcType=NVARCHAR},
+      </if>
+      <if test="functionary != null" >
+        functionary = #{functionary,jdbcType=NCHAR},
+      </if>
+      <if test="telphone != null" >
+        telphone = #{telphone,jdbcType=NCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=NCHAR},
+      </if>
+    </set>
+    where ap_id = #{apId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hman.water.model.RiverAreaPointInfo" >
+    update river_area_point_info
+    set areaid = #{areaid,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=INTEGER},
+      ip = #{ip,jdbcType=NVARCHAR},
+      c_id = #{cId,jdbcType=VARCHAR},
+      c_name = #{cName,jdbcType=NVARCHAR},
+      functionary = #{functionary,jdbcType=NCHAR},
+      telphone = #{telphone,jdbcType=NCHAR},
+      email = #{email,jdbcType=NCHAR}
+    where ap_id = #{apId,jdbcType=INTEGER}
+  </update>
+</mapper>

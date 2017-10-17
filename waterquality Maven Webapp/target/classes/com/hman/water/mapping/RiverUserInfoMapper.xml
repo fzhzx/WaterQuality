@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hman.water.dao.RiverUserInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.hman.water.model.RiverUserInfo" >
+    <result column="u_id" property="uId" jdbcType="INTEGER" />
+    <result column="u_name" property="uName" jdbcType="NCHAR" />
+    <result column="u_psd" property="uPsd" jdbcType="NCHAR" />
+    <result column="u_real_name" property="uRealName" jdbcType="NCHAR" />
+    <result column="u_telphone" property="uTelphone" jdbcType="NCHAR" />
+    <result column="u_email" property="uEmail" jdbcType="NCHAR" />
+    
+  </resultMap>
+  <!-- 查询用户 用户名和手机号 -->
+  <select id="selectRiverUserInfo" parameterType="com.hman.water.model.RiverUserInfo" resultMap="BaseResultMap">
+  	select * from river_user_info where 
+	  <if test="uName != null and uName != ''" >
+	  u_name = #{uName,jdbcType=NCHAR}
+	  </if>
+	  <if test="uName != null and uName != '' and uTelphone != null and uTelphone != ''" >
+	  or
+	  </if>
+	  <if test="uTelphone != null and uTelphone != ''">
+	  u_telphone = #{uTelphone,jdbcType=NCHAR}
+	  </if>
+	  ;
+  </select>
+  
+  <!-- 查询用户 用户名和手机号 -->
+  <select id="selectRiverUserInfoById" parameterType="com.hman.water.model.RiverUserInfo" resultMap="BaseResultMap">
+  	select * from river_user_info where 
+	  u_id = #{uId,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 用户登录获取检测点列表 -->
+  <resultMap type="com.hman.water.model.RiverUserInfo" id="AreaPointInfoAndUserInfoResultMap" extends="BaseResultMap">
+  	<collection property="riverUserAreaRelaLists" javaType="list" ofType="com.hman.water.model.RiverUserAreaRela">
+  		<id property="id" column="rela_id"/>
+  		<result property="uid" column="rela_uid"/>
+  		<result property="apId" column="rela_apid"/>
+  		<association property="riverAreaPointInfo" javaType="com.hman.water.model.RiverAreaPointInfo">
+  			<id property="apId" column="point_apid"/>
+  			<result property="cName" column="point_cname"/>
+  			<result property="typeId" column="point_typeid"/>
+  			<result property="ip" column="point_ip"/>
+  			<result property="areaid" column="point_areaid"/>
+  			<result property="functionary" column="point_functionary"/>
+  			<result property="telphone" column="point_telphone"/>
+  			<result property="email" column="point_email"/>
+  		</association>
+  	</collection>
+  </resultMap>
+  <select id="selectAreaPointInfoByUserInfo" parameterType="com.hman.water.model.RiverUserInfo" resultMap="AreaPointInfoAndUserInfoResultMap">
+  	SELECT
+	dbo.river_user_info.u_id,
+	dbo.river_user_info.u_name,
+	dbo.river_user_info.u_psd,
+	dbo.river_user_info.u_real_name,
+	dbo.river_user_info.u_telphone,
+	dbo.river_user_info.u_email,
+	dbo.river_user_area_rela.id rela_id,
+	dbo.river_user_area_rela.ap_id rela_apid,
+	dbo.river_user_area_rela.uid rela_uid,
+	dbo.river_area_point_info.ap_id point_apid,
+	dbo.river_area_point_info.type_id point_typeid,
+	dbo.river_area_point_info.ip point_ip,
+	dbo.river_area_point_info.c_name point_cname,
+	dbo.river_area_point_info.areaid point_areaid,
+	dbo.river_area_point_info.functionary point_functionary,
+	dbo.river_area_point_info.telphone point_telphone,
+	dbo.river_area_point_info.email point_email
+	
+	FROM
+	dbo.river_user_info
+	 JOIN dbo.river_user_area_rela ON dbo.river_user_info.u_id = dbo.river_user_area_rela.uid
+	 JOIN dbo.river_area_point_info ON dbo.river_user_area_rela.ap_id = dbo.river_area_point_info.ap_id
+	 where  dbo.river_user_info.u_id = #{uId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 用户和密码登录 -->
+  <select id="selectUserInfoByLogin" parameterType="com.hman.water.model.RiverUserInfo" resultMap="BaseResultMap">
+  	select * from river_user_info where 
+  	<if test="uTelphone != null and uTelphone != ''">
+		 dbo.river_user_info.u_telphone = #{uTelphone,jdbcType=NCHAR} 
+	 </if>
+	 <if test="uName != null and uName != ''">
+	 	dbo.river_user_info.u_name = #{uName,jdbcType=NCHAR}
+	 </if>
+	 and dbo.river_user_info.u_psd = #{uPsd,jdbcType=NCHAR}
+  </select>
+  
+  <!-- 通过电话号码修改密码 -->
+  <update id="updatePasswordByTelphoneOrId" parameterType="com.hman.water.model.RiverUserInfo">
+  	update river_user_info
+  	<set >
+      <if test="uPsd != null and uPsd != ''" >
+        u_psd = #{uPsd,jdbcType=NCHAR},
+      </if>
+    </set>
+    where 1 = 1
+    <if test="uId != null and uId != ''">
+    	and u_id = #{uId,jdbcType=INTEGER}
+    </if>
+    <if test="uTelphone != null and uTelphone != ''">    	
+	   and u_telphone = #{uTelphone,jdbcType=VARCHAR}
+    </if>
+  </update>
+  
+  <insert id="insert" parameterType="com.hman.water.model.RiverUserInfo" >
+    insert into river_user_info ( u_name, u_psd, 
+      u_real_name, u_telphone, u_email
+      )
+    values ( #{uName,jdbcType=NCHAR}, #{uPsd,jdbcType=NCHAR}, 
+      #{uRealName,jdbcType=NCHAR}, #{uTelphone,jdbcType=NCHAR}, #{uEmail,jdbcType=NCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hman.water.model.RiverUserInfo" >
+    insert into river_user_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uId != null" >
+        u_id,
+      </if>
+      <if test="uName != null" >
+        u_name,
+      </if>
+      <if test="uPsd != null" >
+        u_psd,
+      </if>
+      <if test="uRealName != null" >
+        u_real_name,
+      </if>
+      <if test="uTelphone != null" >
+        u_telphone,
+      </if>
+      <if test="uEmail != null" >
+        u_email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uId != null" >
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="uName != null" >
+        #{uName,jdbcType=NCHAR},
+      </if>
+      <if test="uPsd != null" >
+        #{uPsd,jdbcType=NCHAR},
+      </if>
+      <if test="uRealName != null" >
+        #{uRealName,jdbcType=NCHAR},
+      </if>
+      <if test="uTelphone != null" >
+        #{uTelphone,jdbcType=NCHAR},
+      </if>
+      <if test="uEmail != null" >
+        #{uEmail,jdbcType=NCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

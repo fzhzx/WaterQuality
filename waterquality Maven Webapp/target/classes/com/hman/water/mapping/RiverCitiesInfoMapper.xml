@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hman.water.dao.RiverCitiesInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.hman.water.model.RiverCitiesInfo" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="cityid" property="cityid" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="provinceid" property="provinceid" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hman.water.model.RiverCitiesInfo" >
+    insert into river_cities_info (id, cityid, city, 
+      provinceid)
+    values (#{id,jdbcType=INTEGER}, #{cityid,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{provinceid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hman.water.model.RiverCitiesInfo" >
+    insert into river_cities_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cityid != null" >
+        cityid,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="provinceid != null" >
+        provinceid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cityid != null" >
+        #{cityid,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceid != null" >
+        #{provinceid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

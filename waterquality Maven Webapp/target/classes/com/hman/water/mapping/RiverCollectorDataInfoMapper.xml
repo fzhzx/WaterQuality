@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hman.water.dao.RiverCollectorDataInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.hman.water.model.RiverCollectorDataInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="tempValue" property="tempvalue" jdbcType="DOUBLE" />
+    <result column="turbValue" property="turbvalue" jdbcType="DOUBLE" />
+    <result column="tdsValue" property="tdsvalue" jdbcType="DOUBLE" />
+    <result column="docValue" property="docvalue" jdbcType="DOUBLE" />
+    <result column="chro_r" property="chroR" jdbcType="INTEGER" />
+    <result column="chro_g" property="chroG" jdbcType="INTEGER" />
+    <result column="chro_b" property="chroB" jdbcType="INTEGER" />
+    <result column="phValue" property="phvalue" jdbcType="DOUBLE" />
+    <result column="gps_lat" property="gpsLat" jdbcType="CHAR" />
+    <result column="gps_long" property="gpsLong" jdbcType="CHAR" />
+    <result column="savetime" property="savetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, c_id, tempValue, turbValue, tdsValue, docValue, chro_r, chro_g, chro_b, phValue, 
+    gps_lat, gps_long, savetime
+  </sql>
+  
+  <!-- 获取监测点一条数据 -->
+  <resultMap type="com.hman.water.model.RiverCollectorDataInfo" id="CollectDataMap" extends="BaseResultMap">
+  	<association property="riverThresholdInfo" javaType="com.hman.water.model.RiverThresholdInfo">
+  		<id property="cId" column="info_cid"/>
+  		<result property="tempmax" column="info_tempmax"/>
+  		<result property="tempmin" column="info_tempmin"/>
+  		<result property="turbmax" column="info_turbmax"/>
+  		<result property="turbmin" column="info_turbmin"/>
+  		<result property="tdsmax" column="info_tdsmax"/>
+  		<result property="tdsmin" column="info_tdsmin"/>
+  		<result property="docmax" column="info_docmax"/>
+  		<result property="docmin" column="info_docmin"/>
+  		<result property="chrormax" column="info_chrormax"/>
+  		<result property="chrormin" column="info_chrormin"/>
+  		<result property="chrogmax" column="info_chrogmax"/>
+  		<result property="chrogmin" column="info_chrogmin"/>
+  		<result property="chrobmax" column="info_chrobmax"/>
+  		<result property="chrobmin" column="info_chrobmin"/>
+  		<result property="phmax" column="info_phmax"/>
+  		<result property="phmin" column="info_phmin"/>
+  	</association>
+  </resultMap>
+  <select id="selectCollectorDataOneLate" parameterType="com.hman.water.model.RiverCollectorDataInfo" resultMap="CollectDataMap">
+  	SELECT
+		top 1
+		dbo.river_collector_data_info.id,
+		dbo.river_collector_data_info.c_id,
+		dbo.river_collector_data_info.tempValue,
+		dbo.river_collector_data_info.turbValue,
+		dbo.river_collector_data_info.tdsValue,
+		dbo.river_collector_data_info.docValue,
+		dbo.river_collector_data_info.chro_r,
+		dbo.river_collector_data_info.chro_g,
+		dbo.river_collector_data_info.chro_b,
+		dbo.river_collector_data_info.phValue,
+		dbo.river_collector_data_info.gps_lat,
+		dbo.river_collector_data_info.gps_long,
+		dbo.river_collector_data_info.savetime,
+		dbo.river_threshold_info.c_id info_cid,
+		dbo.river_threshold_info.tempMAX info_tempmax,
+		dbo.river_threshold_info.tempMIN info_tempmin,
+		dbo.river_threshold_info.turbMAX info_turbmax,
+		dbo.river_threshold_info.turbMIN info_turbmin,
+		dbo.river_threshold_info.tdsMAX info_tdsmax,
+		dbo.river_threshold_info.tdsMIN info_tdsmin,
+		dbo.river_threshold_info.docMAX info_docmax,
+		dbo.river_threshold_info.docMIN info_docmin,
+		dbo.river_threshold_info.chroRMAX info_chrormax,
+		dbo.river_threshold_info.chroRMIN info_chrormin,
+		dbo.river_threshold_info.chroGMAX info_chrogmax,
+		dbo.river_threshold_info.chroGMIN info_chrogmin,
+		dbo.river_threshold_info.chroBMAX info_chrobmax,
+		dbo.river_threshold_info.chroBMIN info_chrobmin,
+		dbo.river_threshold_info.phMAX info_phmax,
+		dbo.river_threshold_info.phMIN info_phmin
+		
+		FROM
+		dbo.river_collector_data_info
+		JOIN dbo.river_threshold_info ON dbo.river_collector_data_info.c_id = dbo.river_threshold_info.c_id
+		where dbo.river_collector_data_info.c_id = #{cId,jdbcType=VARCHAR}
+		ORDER BY savetime DESC
+  </select>
+  
+  <!-- 监测点历史数据 -->
+  <select id="selectCollectorDataHistory" parameterType="com.hman.water.model.RiverCollectorDataInfo" resultMap="CollectDataMap">
+  	SELECT
+		dbo.river_collector_data_info.id,
+		dbo.river_collector_data_info.c_id,
+		dbo.river_collector_data_info.tempValue,
+		dbo.river_collector_data_info.turbValue,
+		dbo.river_collector_data_info.tdsValue,
+		dbo.river_collector_data_info.docValue,
+		dbo.river_collector_data_info.chro_r,
+		dbo.river_collector_data_info.chro_g,
+		dbo.river_collector_data_info.chro_b,
+		dbo.river_collector_data_info.phValue,
+		dbo.river_collector_data_info.gps_lat,
+		dbo.river_collector_data_info.gps_long,
+		dbo.river_collector_data_info.savetime,
+		dbo.river_threshold_info.c_id info_cid,
+		dbo.river_threshold_info.tempMAX info_tempmax,
+		dbo.river_threshold_info.tempMIN info_tempmin,
+		dbo.river_threshold_info.turbMAX info_turbmax,
+		dbo.river_threshold_info.turbMIN info_turbmin,
+		dbo.river_threshold_info.tdsMAX info_tdsmax,
+		dbo.river_threshold_info.tdsMIN info_tdsmin,
+		dbo.river_threshold_info.docMAX info_docmax,
+		dbo.river_threshold_info.docMIN info_docmin,
+		dbo.river_threshold_info.chroRMAX info_chrormax,
+		dbo.river_threshold_info.chroRMIN info_chrormin,
+		dbo.river_threshold_info.chroGMAX info_chrogmax,
+		dbo.river_threshold_info.chroGMIN info_chrogmin,
+		dbo.river_threshold_info.chroBMAX info_chrobmax,
+		dbo.river_threshold_info.chroBMIN info_chrobmin,
+		dbo.river_threshold_info.phMAX info_phmax,
+		dbo.river_threshold_info.phMIN info_phmin
+		
+		FROM
+		dbo.river_collector_data_info
+		JOIN dbo.river_threshold_info ON dbo.river_collector_data_info.c_id = dbo.river_threshold_info.c_id
+		where dbo.river_collector_data_info.c_id = #{cId,jdbcType=VARCHAR}
+		ORDER BY savetime DESC
+  </select>
+  
+  <!-- 按时间搜索数据 -->
+  <select id="searchCollectorDataByTime" parameterType="com.hman.water.model.RiverCollectorDataInfo" resultMap="CollectDataMap" >
+  <![CDATA[
+  	SELECT
+		dbo.river_collector_data_info.id,
+		dbo.river_collector_data_info.c_id,
+		dbo.river_collector_data_info.tempValue,
+		dbo.river_collector_data_info.turbValue,
+		dbo.river_collector_data_info.tdsValue,
+		dbo.river_collector_data_info.docValue,
+		dbo.river_collector_data_info.chro_r,
+		dbo.river_collector_data_info.chro_g,
+		dbo.river_collector_data_info.chro_b,
+		dbo.river_collector_data_info.phValue,
+		dbo.river_collector_data_info.gps_lat,
+		dbo.river_collector_data_info.gps_long,
+		dbo.river_collector_data_info.savetime,
+		dbo.river_threshold_info.c_id info_cid,
+		dbo.river_threshold_info.tempMAX info_tempmax,
+		dbo.river_threshold_info.tempMIN info_tempmin,
+		dbo.river_threshold_info.turbMAX info_turbmax,
+		dbo.river_threshold_info.turbMIN info_turbmin,
+		dbo.river_threshold_info.tdsMAX info_tdsmax,
+		dbo.river_threshold_info.tdsMIN info_tdsmin,
+		dbo.river_threshold_info.docMAX info_docmax,
+		dbo.river_threshold_info.docMIN info_docmin,
+		dbo.river_threshold_info.chroRMAX info_chrormax,
+		dbo.river_threshold_info.chroRMIN info_chrormin,
+		dbo.river_threshold_info.chroGMAX info_chrogmax,
+		dbo.river_threshold_info.chroGMIN info_chrogmin,
+		dbo.river_threshold_info.chroBMAX info_chrobmax,
+		dbo.river_threshold_info.chroBMIN info_chrobmin,
+		dbo.river_threshold_info.phMAX info_phmax,
+		dbo.river_threshold_info.phMIN info_phmin
+		
+		FROM
+		dbo.river_collector_data_info
+		JOIN dbo.river_threshold_info ON dbo.river_collector_data_info.c_id = dbo.river_threshold_info.c_id
+		where dbo.river_collector_data_info.c_id = #{cId,jdbcType=VARCHAR}
+		and dbo.river_collector_data_info.savetime <= #{endTime}
+		and dbo.river_collector_data_info.savetime >= #{startTime}
+		ORDER BY savetime DESC
+	]]>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from river_collector_data_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from river_collector_data_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hman.water.model.RiverCollectorDataInfo" >
+    insert into river_collector_data_info (id, c_id, tempValue, 
+      turbValue, tdsValue, docValue, 
+      chro_r, chro_g, chro_b, 
+      phValue, gps_lat, gps_long, 
+      savetime)
+    values (#{id,jdbcType=INTEGER}, #{cId,jdbcType=VARCHAR}, #{tempvalue,jdbcType=DOUBLE}, 
+      #{turbvalue,jdbcType=DOUBLE}, #{tdsvalue,jdbcType=DOUBLE}, #{docvalue,jdbcType=DOUBLE}, 
+      #{chroR,jdbcType=INTEGER}, #{chroG,jdbcType=INTEGER}, #{chroB,jdbcType=INTEGER}, 
+      #{phvalue,jdbcType=DOUBLE}, #{gpsLat,jdbcType=CHAR}, #{gpsLong,jdbcType=CHAR}, 
+      #{savetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hman.water.model.RiverCollectorDataInfo" >
+    insert into river_collector_data_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="tempvalue != null" >
+        tempValue,
+      </if>
+      <if test="turbvalue != null" >
+        turbValue,
+      </if>
+      <if test="tdsvalue != null" >
+        tdsValue,
+      </if>
+      <if test="docvalue != null" >
+        docValue,
+      </if>
+      <if test="chroR != null" >
+        chro_r,
+      </if>
+      <if test="chroG != null" >
+        chro_g,
+      </if>
+      <if test="chroB != null" >
+        chro_b,
+      </if>
+      <if test="phvalue != null" >
+        phValue,
+      </if>
+      <if test="gpsLat != null" >
+        gps_lat,
+      </if>
+      <if test="gpsLong != null" >
+        gps_long,
+      </if>
+      <if test="savetime != null" >
+        savetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="tempvalue != null" >
+        #{tempvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="turbvalue != null" >
+        #{turbvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="tdsvalue != null" >
+        #{tdsvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="docvalue != null" >
+        #{docvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="chroR != null" >
+        #{chroR,jdbcType=INTEGER},
+      </if>
+      <if test="chroG != null" >
+        #{chroG,jdbcType=INTEGER},
+      </if>
+      <if test="chroB != null" >
+        #{chroB,jdbcType=INTEGER},
+      </if>
+      <if test="phvalue != null" >
+        #{phvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="gpsLat != null" >
+        #{gpsLat,jdbcType=CHAR},
+      </if>
+      <if test="gpsLong != null" >
+        #{gpsLong,jdbcType=CHAR},
+      </if>
+      <if test="savetime != null" >
+        #{savetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hman.water.model.RiverCollectorDataInfo" >
+    update river_collector_data_info
+    <set >
+      <if test="cId != null" >
+        c_id = #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="tempvalue != null" >
+        tempValue = #{tempvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="turbvalue != null" >
+        turbValue = #{turbvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="tdsvalue != null" >
+        tdsValue = #{tdsvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="docvalue != null" >
+        docValue = #{docvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="chroR != null" >
+        chro_r = #{chroR,jdbcType=INTEGER},
+      </if>
+      <if test="chroG != null" >
+        chro_g = #{chroG,jdbcType=INTEGER},
+      </if>
+      <if test="chroB != null" >
+        chro_b = #{chroB,jdbcType=INTEGER},
+      </if>
+      <if test="phvalue != null" >
+        phValue = #{phvalue,jdbcType=DOUBLE},
+      </if>
+      <if test="gpsLat != null" >
+        gps_lat = #{gpsLat,jdbcType=CHAR},
+      </if>
+      <if test="gpsLong != null" >
+        gps_long = #{gpsLong,jdbcType=CHAR},
+      </if>
+      <if test="savetime != null" >
+        savetime = #{savetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hman.water.model.RiverCollectorDataInfo" >
+    update river_collector_data_info
+    set c_id = #{cId,jdbcType=VARCHAR},
+      tempValue = #{tempvalue,jdbcType=DOUBLE},
+      turbValue = #{turbvalue,jdbcType=DOUBLE},
+      tdsValue = #{tdsvalue,jdbcType=DOUBLE},
+      docValue = #{docvalue,jdbcType=DOUBLE},
+      chro_r = #{chroR,jdbcType=INTEGER},
+      chro_g = #{chroG,jdbcType=INTEGER},
+      chro_b = #{chroB,jdbcType=INTEGER},
+      phValue = #{phvalue,jdbcType=DOUBLE},
+      gps_lat = #{gpsLat,jdbcType=CHAR},
+      gps_long = #{gpsLong,jdbcType=CHAR},
+      savetime = #{savetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
