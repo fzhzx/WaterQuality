@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hman.water.dao.RiverThresholdInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.hman.water.model.RiverThresholdInfo" >
+    <id column="c_id" property="cId" jdbcType="VARCHAR" />
+    <result column="tempMAX" property="tempmax" jdbcType="DOUBLE" />
+    <result column="tempMIN" property="tempmin" jdbcType="DOUBLE" />
+    <result column="turbMAX" property="turbmax" jdbcType="DOUBLE" />
+    <result column="turbMIN" property="turbmin" jdbcType="DOUBLE" />
+    <result column="tdsMAX" property="tdsmax" jdbcType="DOUBLE" />
+    <result column="tdsMIN" property="tdsmin" jdbcType="DOUBLE" />
+    <result column="docMAX" property="docmax" jdbcType="DOUBLE" />
+    <result column="docMIN" property="docmin" jdbcType="DOUBLE" />
+    <result column="chroRMAX" property="chrormax" jdbcType="INTEGER" />
+    <result column="chroRMIN" property="chrormin" jdbcType="INTEGER" />
+    <result column="chroGMAX" property="chrogmax" jdbcType="INTEGER" />
+    <result column="chroGMIN" property="chrogmin" jdbcType="INTEGER" />
+    <result column="chroBMAX" property="chrobmax" jdbcType="INTEGER" />
+    <result column="chroBMIN" property="chrobmin" jdbcType="INTEGER" />
+    <result column="phMAX" property="phmax" jdbcType="DOUBLE" />
+    <result column="phMIN" property="phmin" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    c_id, tempMAX, tempMIN, turbMAX, turbMIN, tdsMAX, tdsMIN, docMAX, docMIN, chroRMAX, 
+    chroRMIN, chroGMAX, chroGMIN, chroBMAX, chroBMIN, phMAX, phMIN
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from river_threshold_info
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from river_threshold_info
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hman.water.model.RiverThresholdInfo" >
+    insert into river_threshold_info (c_id, tempMAX, tempMIN, 
+      turbMAX, turbMIN, tdsMAX, 
+      tdsMIN, docMAX, docMIN, 
+      chroRMAX, chroRMIN, chroGMAX, 
+      chroGMIN, chroBMAX, chroBMIN, 
+      phMAX, phMIN)
+    values (#{cId,jdbcType=VARCHAR}, #{tempmax,jdbcType=DOUBLE}, #{tempmin,jdbcType=DOUBLE}, 
+      #{turbmax,jdbcType=DOUBLE}, #{turbmin,jdbcType=DOUBLE}, #{tdsmax,jdbcType=DOUBLE}, 
+      #{tdsmin,jdbcType=DOUBLE}, #{docmax,jdbcType=DOUBLE}, #{docmin,jdbcType=DOUBLE}, 
+      #{chrormax,jdbcType=INTEGER}, #{chrormin,jdbcType=INTEGER}, #{chrogmax,jdbcType=INTEGER}, 
+      #{chrogmin,jdbcType=INTEGER}, #{chrobmax,jdbcType=INTEGER}, #{chrobmin,jdbcType=INTEGER}, 
+      #{phmax,jdbcType=DOUBLE}, #{phmin,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hman.water.model.RiverThresholdInfo" >
+    insert into river_threshold_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="tempmax != null" >
+        tempMAX,
+      </if>
+      <if test="tempmin != null" >
+        tempMIN,
+      </if>
+      <if test="turbmax != null" >
+        turbMAX,
+      </if>
+      <if test="turbmin != null" >
+        turbMIN,
+      </if>
+      <if test="tdsmax != null" >
+        tdsMAX,
+      </if>
+      <if test="tdsmin != null" >
+        tdsMIN,
+      </if>
+      <if test="docmax != null" >
+        docMAX,
+      </if>
+      <if test="docmin != null" >
+        docMIN,
+      </if>
+      <if test="chrormax != null" >
+        chroRMAX,
+      </if>
+      <if test="chrormin != null" >
+        chroRMIN,
+      </if>
+      <if test="chrogmax != null" >
+        chroGMAX,
+      </if>
+      <if test="chrogmin != null" >
+        chroGMIN,
+      </if>
+      <if test="chrobmax != null" >
+        chroBMAX,
+      </if>
+      <if test="chrobmin != null" >
+        chroBMIN,
+      </if>
+      <if test="phmax != null" >
+        phMAX,
+      </if>
+      <if test="phmin != null" >
+        phMIN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=VARCHAR},
+      </if>
+      <if test="tempmax != null" >
+        #{tempmax,jdbcType=DOUBLE},
+      </if>
+      <if test="tempmin != null" >
+        #{tempmin,jdbcType=DOUBLE},
+      </if>
+      <if test="turbmax != null" >
+        #{turbmax,jdbcType=DOUBLE},
+      </if>
+      <if test="turbmin != null" >
+        #{turbmin,jdbcType=DOUBLE},
+      </if>
+      <if test="tdsmax != null" >
+        #{tdsmax,jdbcType=DOUBLE},
+      </if>
+      <if test="tdsmin != null" >
+        #{tdsmin,jdbcType=DOUBLE},
+      </if>
+      <if test="docmax != null" >
+        #{docmax,jdbcType=DOUBLE},
+      </if>
+      <if test="docmin != null" >
+        #{docmin,jdbcType=DOUBLE},
+      </if>
+      <if test="chrormax != null" >
+        #{chrormax,jdbcType=INTEGER},
+      </if>
+      <if test="chrormin != null" >
+        #{chrormin,jdbcType=INTEGER},
+      </if>
+      <if test="chrogmax != null" >
+        #{chrogmax,jdbcType=INTEGER},
+      </if>
+      <if test="chrogmin != null" >
+        #{chrogmin,jdbcType=INTEGER},
+      </if>
+      <if test="chrobmax != null" >
+        #{chrobmax,jdbcType=INTEGER},
+      </if>
+      <if test="chrobmin != null" >
+        #{chrobmin,jdbcType=INTEGER},
+      </if>
+      <if test="phmax != null" >
+        #{phmax,jdbcType=DOUBLE},
+      </if>
+      <if test="phmin != null" >
+        #{phmin,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hman.water.model.RiverThresholdInfo" >
+    update river_threshold_info
+    <set >
+      <if test="tempmax != null" >
+        tempMAX = #{tempmax,jdbcType=DOUBLE},
+      </if>
+      <if test="tempmin != null" >
+        tempMIN = #{tempmin,jdbcType=DOUBLE},
+      </if>
+      <if test="turbmax != null" >
+        turbMAX = #{turbmax,jdbcType=DOUBLE},
+      </if>
+      <if test="turbmin != null" >
+        turbMIN = #{turbmin,jdbcType=DOUBLE},
+      </if>
+      <if test="tdsmax != null" >
+        tdsMAX = #{tdsmax,jdbcType=DOUBLE},
+      </if>
+      <if test="tdsmin != null" >
+        tdsMIN = #{tdsmin,jdbcType=DOUBLE},
+      </if>
+      <if test="docmax != null" >
+        docMAX = #{docmax,jdbcType=DOUBLE},
+      </if>
+      <if test="docmin != null" >
+        docMIN = #{docmin,jdbcType=DOUBLE},
+      </if>
+      <if test="chrormax != null" >
+        chroRMAX = #{chrormax,jdbcType=INTEGER},
+      </if>
+      <if test="chrormin != null" >
+        chroRMIN = #{chrormin,jdbcType=INTEGER},
+      </if>
+      <if test="chrogmax != null" >
+        chroGMAX = #{chrogmax,jdbcType=INTEGER},
+      </if>
+      <if test="chrogmin != null" >
+        chroGMIN = #{chrogmin,jdbcType=INTEGER},
+      </if>
+      <if test="chrobmax != null" >
+        chroBMAX = #{chrobmax,jdbcType=INTEGER},
+      </if>
+      <if test="chrobmin != null" >
+        chroBMIN = #{chrobmin,jdbcType=INTEGER},
+      </if>
+      <if test="phmax != null" >
+        phMAX = #{phmax,jdbcType=DOUBLE},
+      </if>
+      <if test="phmin != null" >
+        phMIN = #{phmin,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hman.water.model.RiverThresholdInfo" >
+    update river_threshold_info
+    set tempMAX = #{tempmax,jdbcType=DOUBLE},
+      tempMIN = #{tempmin,jdbcType=DOUBLE},
+      turbMAX = #{turbmax,jdbcType=DOUBLE},
+      turbMIN = #{turbmin,jdbcType=DOUBLE},
+      tdsMAX = #{tdsmax,jdbcType=DOUBLE},
+      tdsMIN = #{tdsmin,jdbcType=DOUBLE},
+      docMAX = #{docmax,jdbcType=DOUBLE},
+      docMIN = #{docmin,jdbcType=DOUBLE},
+      chroRMAX = #{chrormax,jdbcType=INTEGER},
+      chroRMIN = #{chrormin,jdbcType=INTEGER},
+      chroGMAX = #{chrogmax,jdbcType=INTEGER},
+      chroGMIN = #{chrogmin,jdbcType=INTEGER},
+      chroBMAX = #{chrobmax,jdbcType=INTEGER},
+      chroBMIN = #{chrobmin,jdbcType=INTEGER},
+      phMAX = #{phmax,jdbcType=DOUBLE},
+      phMIN = #{phmin,jdbcType=DOUBLE}
+    where c_id = #{cId,jdbcType=VARCHAR}
+  </update>
+</mapper>
